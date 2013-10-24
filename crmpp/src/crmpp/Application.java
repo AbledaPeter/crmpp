@@ -10,7 +10,7 @@ public class Application {
 		
 		model.createUserTables();
 		
-		model.insertUserTest();	
+		model.insertUser(1, "Teszt", "Elek", "M", 66, "tesztelek@ittvagyok.hu", "golf");	
 	}
 	
 	

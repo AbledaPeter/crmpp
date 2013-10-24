@@ -24,24 +24,7 @@ public class Model {
 		}
 	}
 	
-	public void test() throws SQLException {
-		
-		if (conn != null)
-		{
-			PreparedStatement stmt = conn.prepareStatement("SELECT * FROM user");
-			ResultSet rs = stmt.executeQuery();
-			
-			ResultSetMetaData rm = rs.getMetaData();
-
-			while (rs.next()) {
-				for (int i=1; i<4; i++)
-				{
-					System.out.println(rm.getColumnName(i) + "\t" + rs.getString(i));
-				}
-			}
-		}
-	}
-	
+	// Creates the tables that store user data; drops existing ones
 	public void createUserTables() throws SQLException {
 		if (conn != null)
 		{
@@ -49,17 +32,11 @@ public class Model {
 			
 			String dropString = "";
 			
-			dropString = "DELETE FROM crmavailabilities";
+			dropString = "DROP TABLE IF EXISTS crmavailabilities";
 			stmt.execute(dropString);
-			dropString = "DROP TABLE crmavailabilities";
+			dropString = "DROP TABLE IF EXISTS crminterests";
 			stmt.execute(dropString);
-			dropString = "DELETE FROM crminterests";
-			stmt.execute(dropString);
-			dropString = "DROP TABLE crminterests";
-			stmt.execute(dropString);
-			dropString = "DELETE FROM crmusers";
-			stmt.execute(dropString);
-			dropString = "DROP TABLE crmusers";
+			dropString = "DROP TABLE IF EXISTS crmusers";
 			stmt.execute(dropString);
 
 			
@@ -79,24 +56,51 @@ public class Model {
 		}
 	}
 	
-	public void insertUserTest() throws SQLException {
+	// Inserts a user into the database with the given parameters
+	public void insertUser(int userID, String firstName, String lastName, String gender, int age,
+					String email, String sport) throws SQLException {
 		if (conn != null)
 		{
-			PreparedStatement pstmt = conn.prepareStatement("INSERT INTO crmusers " + 
-						"VALUES (1, 'Teszt', 'Elek', 'M', 66)");
-			pstmt.execute();
+			// TODO: egzaktabb, pontosabb hibaüzenet
+			if (firstName.length() > 50 || lastName.length() > 75 || (!gender.equals("M") && !gender.equals("F"))
+					|| email.length() > 50 || sport.length() > 50)
+			{
+				System.out.println("Invalid argument(s)!");
+				return;
+			}
 			
-			pstmt = conn.prepareStatement("INSERT INTO crmavailabilities " + 
-					"VALUES (1, 'tesztelek@ittvagyok.hu')");
-			pstmt.execute();
+			String query = "";
+			PreparedStatement stmt = null;
 			
-			pstmt = conn.prepareStatement("INSERT INTO crminterests " + 
-					"VALUES (1, 'football')");
-			pstmt.execute();
+			query = "INSERT INTO crmusers VALUES (?, ?, ?, ?, ?)";
+			stmt = conn.prepareStatement(query);
+			stmt.setInt(1, userID);
+			stmt.setString(2, firstName);
+			stmt.setString(3, lastName);
+			stmt.setString(4, gender);
+			stmt.setInt(5, age);
 			
-			pstmt = conn.prepareStatement("SELECT * FROM crmusers");
+			stmt.execute();
 			
-		    ResultSet rs = pstmt.executeQuery();
+			query = "INSERT INTO crmavailabilities VALUES (?, ?)";
+			stmt = conn.prepareStatement(query);
+			stmt.setInt(1, userID);
+			stmt.setString(2, email);
+			stmt.execute();
+			
+			query = "INSERT INTO crminterests VALUES (?, ?)";
+			stmt = conn.prepareStatement(query);
+			stmt.setInt(1, userID);
+			stmt.setString(2, sport);
+			stmt.execute();
+			
+			//****************************************//
+			// Code from now on is used for testing only
+			//****************************************//
+			
+			stmt = conn.prepareStatement("SELECT * FROM crmusers");
+			
+		    ResultSet rs = stmt.executeQuery();
 		      
 		    ResultSetMetaData rm = rs.getMetaData();
 
@@ -107,9 +111,9 @@ public class Model {
 				}
 			}
 			
-			pstmt = conn.prepareStatement("SELECT * FROM crmavailabilities");
+			stmt = conn.prepareStatement("SELECT * FROM crmavailabilities");
 			
-		    rs = pstmt.executeQuery();
+		    rs = stmt.executeQuery();
 		      
 		    rm = rs.getMetaData();
 
@@ -120,9 +124,9 @@ public class Model {
 				}
 			}
 			
-			pstmt = conn.prepareStatement("SELECT * FROM crminterests");
+			stmt = conn.prepareStatement("SELECT * FROM crminterests");
 			
-		    rs = pstmt.executeQuery();
+		    rs = stmt.executeQuery();
 		      
 		    rm = rs.getMetaData();
 
@@ -132,6 +136,10 @@ public class Model {
 					System.out.println(rm.getColumnName(i) + "\t" + rs.getString(i));
 				}
 			}
+			
+			//****************************************//
+			//************End of testing***************//
+			//****************************************//
 		}
 	}
 }
