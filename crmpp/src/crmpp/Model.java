@@ -79,24 +79,6 @@ public class Model {
 		}
 	}
 	
-	public void createAvailabilities() throws SQLException {
-		if (conn != null)
-		{
-			java.sql.Statement stmt = conn.createStatement();
-			
-
-		}
-	}
-	
-	public void createInterests() throws SQLException {
-		if (conn != null)
-		{
-			java.sql.Statement stmt = conn.createStatement();
-			
-
-		}
-	}
-	
 	public void insertUserTest() throws SQLException {
 		if (conn != null)
 		{
