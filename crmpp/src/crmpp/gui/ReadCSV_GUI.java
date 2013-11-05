@@ -20,14 +20,25 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import crmpp.csvreader.ReadCSV;
+import crmpp.Application;
 
 @SuppressWarnings("serial")
 public class ReadCSV_GUI extends JFrame{
-
-	private JLabel csvLabel;
-	private JTextField csvTextField;
-	private JButton browseButton;
+	private Application app;			// the application logic
+	
+	private JLabel usersLabel;
+	private JLabel interestsLabel;
+	private JLabel availabilitiesLabel;
+	
+	private JTextField usersTextField;
+	private JTextField interestsTextField;
+	private JTextField availabilitiesTextField;
+	
+	private JButton usersButton;
+	private JButton interestsButton;
+	private JButton availabilitiesButton;
+	
+	
 	private JButton okButton;
 	
 	private final JPanel groupPanel;
@@ -35,21 +46,30 @@ public class ReadCSV_GUI extends JFrame{
 	private GroupLayout groupLayout;
 	private FlowLayout flowLayout;
 	
-	public ReadCSV_GUI(String title)
+	public ReadCSV_GUI(String title, Application _app)
 	{
 		super(title);
+		app = _app;
 		
 		// initialize the components
-		csvLabel = new JLabel("CSV Path:");
-		csvLabel.setBorder(new EmptyBorder(0,0,0,10));
+		usersLabel = new JLabel("Users CSV:");
+		usersLabel.setBorder(new EmptyBorder(0,0,0,10));
+		interestsLabel = new JLabel("Interests CSV:");
+		interestsLabel.setBorder(new EmptyBorder(0,0,0,10));
+		availabilitiesLabel = new JLabel("Availabilities CSV:");
+		availabilitiesLabel.setBorder(new EmptyBorder(0,0,0,10));
 		
-		csvTextField = new JTextField(50);
+		usersTextField = new JTextField(50);
+		interestsTextField = new JTextField(50);
+		availabilitiesTextField = new JTextField(50);
 		
-		browseButton = new JButton("Browse...");
-		browseButton.setMargin(new Insets(2, 2, 2, 2));
+		usersButton = new JButton("Browse...");
+		interestsButton = new JButton("Browse...");
+		availabilitiesButton = new JButton("Browse...");
 		
-		// open the browse dialog on clicking the 'Browse...' button
-		browseButton.addActionListener(new CSVFileBrowser());
+		usersButton.addActionListener(new CSVFileBrowser(usersTextField));
+		interestsButton.addActionListener(new CSVFileBrowser(interestsTextField));
+		availabilitiesButton.addActionListener(new CSVFileBrowser(availabilitiesTextField));
 		
 		okButton = new JButton("OK");
 		okButton.setMargin(new Insets(10, 10, 10, 10));
@@ -69,47 +89,69 @@ public class ReadCSV_GUI extends JFrame{
 		// configure the layouts
 		GroupLayout.SequentialGroup hGroup = groupLayout.createSequentialGroup();
 		hGroup.addGroup(groupLayout.createParallelGroup().
-		            addComponent(csvLabel));
+		            addComponent(usersLabel).addComponent(interestsLabel).addComponent(availabilitiesLabel));
 		hGroup.addGroup(groupLayout.createParallelGroup().
-					addComponent(csvTextField).addComponent(flowPanel));
+					addComponent(flowPanel).addComponent(usersTextField).addComponent(interestsTextField).addComponent(availabilitiesTextField));
 		hGroup.addGroup(groupLayout.createParallelGroup().
-					addComponent(browseButton));
+					addComponent(usersButton).addComponent(interestsButton).addComponent(availabilitiesButton));
 	            
 		groupLayout.setHorizontalGroup(hGroup);
 		
 		GroupLayout.SequentialGroup vGroup = groupLayout.createSequentialGroup();
 		vGroup.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE).
-		            addComponent(csvLabel).addComponent(csvTextField).addComponent(browseButton));
-		vGroup.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE));
+		            addComponent(usersLabel).addComponent(usersTextField).addComponent(usersButton));
+		vGroup.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE).
+	            addComponent(interestsLabel).addComponent(interestsTextField).addComponent(interestsButton));
+		vGroup.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE).
+	            addComponent(availabilitiesLabel).addComponent(availabilitiesTextField).addComponent(availabilitiesButton));
 		vGroup.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE).
 		            addComponent(flowPanel));
 		
 		groupLayout.setVerticalGroup(vGroup);
 		
-		// read and process the file on clicking the 'OK' button
+		// read and process the file when clicking the 'OK' button
 		okButton.addActionListener (new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				File f = new File(csvTextField.getText());
 				
-				if (!f.exists())
+				File usersFile = new File(usersTextField.getText());
+				
+				// Check if every file is valid
+				if (!usersFile.exists())
 				{
-					showFileNotFoundError();
+					showFileNotFoundError("\"" + usersTextField.getText() + "\"");
 				}
-				else
+				
+				File interestsFile = new File(interestsTextField.getText());
+				
+				if (!interestsFile.exists())
 				{
-					// TODO: ha három CSV típusunk van (és hozzá 3 féle read fv.), akkor ide is fel kellene venni 3 gombot, ami nem szép
-					// esetleg meg lehetne adni a CSV-ben egy fejlécet, amibõl kiderül, hogy milyen típusú
-					ReadCSV reader = new ReadCSV();
-					reader.readCRMUsersCSV(f);
+					showFileNotFoundError("\"" + interestsTextField.getText() + "\"");
 				}
+				
+				File availabilitiesFile = new File(availabilitiesTextField.getText());
+				
+				if (!availabilitiesFile.exists())
+				{
+					showFileNotFoundError("\"" + availabilitiesTextField.getText() + "\"");
+				}
+				
+				try 
+				{
+					app.persistUserData(usersFile, interestsFile, availabilitiesFile);
+				} 
+				catch (Exception e1) 
+				{
+					e1.printStackTrace();
+				}
+				dispose();
 			}
 		});
 	}
 	
 	// Displays a popup error message regarding a non-existing file
-	private void showFileNotFoundError() {
-		JOptionPane.showMessageDialog(this, "The file on the specified path does not exist!", "File not found", JOptionPane.ERROR_MESSAGE);
+	private void showFileNotFoundError(String filepath) {
+		JOptionPane.showMessageDialog(this, "The file at path " + filepath +" does not exist!", "File not found", JOptionPane.ERROR_MESSAGE);
 	}
 	
 	// Packs the frame and sets it visible
@@ -125,15 +167,18 @@ public class ReadCSV_GUI extends JFrame{
     	pack();
     	setVisible(true);
 	}
-	
-	// Entry point for the application
-	public static void main(String[] args) {
-		ReadCSV_GUI gui = new ReadCSV_GUI("CSV Reader");
-		gui.start();
-	}
 
 	// File browser that can see only CSV files and has the default directory "testfiles"
     private class CSVFileBrowser implements ActionListener {
+    	
+    	// the text field to save the browsed file path to
+    	private JTextField field;
+    	
+    	public CSVFileBrowser(JTextField _field) {
+    		super();
+    		field = _field;
+    	}
+    	
         public void actionPerformed(ActionEvent e) {
           JFileChooser chooser = new JFileChooser("testfiles");
           
@@ -144,7 +189,7 @@ public class ReadCSV_GUI extends JFrame{
           int result = chooser.showOpenDialog(ReadCSV_GUI.this);
           
           if (result == JFileChooser.APPROVE_OPTION) {
-            csvTextField.setText(chooser.getSelectedFile().getPath());
+        	  field.setText(chooser.getSelectedFile().getPath());
           }
         }
       }

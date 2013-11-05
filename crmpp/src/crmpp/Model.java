@@ -107,51 +107,53 @@ public class Model {
 			stmt.setInt(1, userID);
 			stmt.setString(2, sport);
 			stmt.execute();
-			
-			//****************************************//
-			// Run queries to check the inserted values
-			//****************************************//
-			
-			stmt = conn.prepareStatement("SELECT * FROM crmusers");
-			
-		    ResultSet rs = stmt.executeQuery();
-		      
-		    ResultSetMetaData rm = rs.getMetaData();
+		}
+		}
+	
+	public void queryUsers() throws SQLException {
+		if (conn != null)
+		{
+			PreparedStatement stmt = conn
+					.prepareStatement("SELECT * FROM crmusers");
+
+			ResultSet rs = stmt.executeQuery();
+
+			ResultSetMetaData rm = rs.getMetaData();
 
 			while (rs.next()) {
-				for (int i=1; i<6; i++)
-				{
-					System.out.println(rm.getColumnName(i) + "\t" + rs.getString(i));
+				for (int i = 1; i < 6; i++) {
+					System.out.println(rm.getColumnName(i) + "\t"
+							+ rs.getString(i));
 				}
 			}
-			
+
 			stmt = conn.prepareStatement("SELECT * FROM crmavailabilities");
-			
-		    rs = stmt.executeQuery();
-		      
-		    rm = rs.getMetaData();
+
+			rs = stmt.executeQuery();
+
+			rm = rs.getMetaData();
 
 			while (rs.next()) {
-				for (int i=1; i<3; i++)
-				{
-					System.out.println(rm.getColumnName(i) + "\t" + rs.getString(i));
+				for (int i = 1; i < 3; i++) {
+					System.out.println(rm.getColumnName(i) + "\t"
+							+ rs.getString(i));
 				}
 			}
-			
+
 			stmt = conn.prepareStatement("SELECT * FROM crminterests");
-			
-		    rs = stmt.executeQuery();
-		      
-		    rm = rs.getMetaData();
+
+			rs = stmt.executeQuery();
+
+			rm = rs.getMetaData();
 
 			while (rs.next()) {
-				for (int i=1; i<3; i++)
-				{
-					System.out.println(rm.getColumnName(i) + "\t" + rs.getString(i));
+				for (int i = 1; i < 3; i++) {
+					System.out.println(rm.getColumnName(i) + "\t"
+							+ rs.getString(i));
 				}
 			}
 		}
-		}
+	}
 		
 		// Inserts a corporation into the database with the given parameters
 		public void insertCorporation(int ID, String name, String address, String email) throws SQLException {
