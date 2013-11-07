@@ -120,6 +120,8 @@ public class Model {
 
 			ResultSetMetaData rm = rs.getMetaData();
 
+			System.out.println("**********USERS**********");
+			
 			while (rs.next()) {
 				for (int i = 1; i < 6; i++) {
 					System.out.println(rm.getColumnName(i) + "\t"
@@ -133,6 +135,8 @@ public class Model {
 
 			rm = rs.getMetaData();
 
+			System.out.println("**********AVAILABILITIES**********");
+			
 			while (rs.next()) {
 				for (int i = 1; i < 3; i++) {
 					System.out.println(rm.getColumnName(i) + "\t"
@@ -146,6 +150,8 @@ public class Model {
 
 			rm = rs.getMetaData();
 
+			System.out.println("**********INTERESTS**********");
+			
 			while (rs.next()) {
 				for (int i = 1; i < 3; i++) {
 					System.out.println(rm.getColumnName(i) + "\t"
@@ -176,23 +182,6 @@ public class Model {
 				stmt.setString(4, email);
 				
 				stmt.execute();
-				
-				//****************************************//
-				// Run a query to check the inserted values
-				//****************************************//
-				
-				stmt = conn.prepareStatement("SELECT * FROM crmcorporations");
-				
-			    ResultSet rs = stmt.executeQuery();
-			      
-			    ResultSetMetaData rm = rs.getMetaData();
-
-				while (rs.next()) {
-					for (int i=1; i<5; i++)
-					{
-						System.out.println(rm.getColumnName(i) + "\t" + rs.getString(i));
-					}
-				}
 			}
 		}
 		
@@ -203,7 +192,6 @@ public class Model {
 				// First check if the given IDs are valid, and if not, do not do anything
 				String query = "";
 				PreparedStatement stmt = null;
-				ResultSet rs = null;
 				
 				for(int userID : users)
 				{
@@ -215,17 +203,35 @@ public class Model {
 
 				
 				stmt.execute();
+			}
+		}
+		
+		public void queryCorporations() throws SQLException {
+			if (conn != null)
+			{
+				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM crmcorporations");
 				
-				//****************************************//
-				// Run a query to check the inserted values
-				//****************************************//
+			    ResultSet rs = stmt.executeQuery();
+			      
+			    ResultSetMetaData rm = rs.getMetaData();
+
+			    System.out.println("**********CORPORATIONS**********");
+			    
+				while (rs.next()) {
+					for (int i=1; i<5; i++)
+					{
+						System.out.println(rm.getColumnName(i) + "\t" + rs.getString(i));
+					}
+				}
 				
 				stmt = conn.prepareStatement("SELECT * FROM crmcorporationuserconnection");
 				
 			    rs = stmt.executeQuery();
 			      
-			    ResultSetMetaData rm = rs.getMetaData();
+			    rm = rs.getMetaData();
 
+			    System.out.println("**********CORPORATION-USER CONNECTIONS**********");
+			    
 				while (rs.next()) {
 					for (int i=1; i<3; i++)
 					{
