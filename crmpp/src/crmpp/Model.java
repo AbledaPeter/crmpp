@@ -110,6 +110,48 @@ public class Model {
 		}
 		}
 	
+	public int getUserCount() throws SQLException {
+		if (conn != null)
+		{
+			PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) AS rowcount FROM crmusers");
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			rs.next();
+			
+			return rs.getInt("rowcount");
+		}
+		return 0;
+	}
+	
+	public int getCorporationsCount() throws SQLException {
+		if (conn != null)
+		{
+			PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) AS rowcount FROM crmcorporations");
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			rs.next();
+			
+			return rs.getInt("rowcount");
+		}
+		return 0;
+	}
+	
+	public int getCorporationContactsCount() throws SQLException {
+		if (conn != null)
+		{
+			PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) AS rowcount FROM crmcorporationuserconnection");
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			rs.next();
+			
+			return rs.getInt("rowcount");
+		}
+		return 0;
+	}
+	
 	public void queryUsers() throws SQLException {
 		if (conn != null)
 		{
@@ -195,14 +237,13 @@ public class Model {
 				
 				for(int userID : users)
 				{
+					System.out.println("Adding userID " + userID);
 					query = "INSERT INTO crmcorporationuserconnection VALUES (?, ?)";
 					stmt = conn.prepareStatement(query);
-					stmt.setInt(1, corporationID);
-					stmt.setInt(2, userID);
+					stmt.setInt(2, corporationID);
+					stmt.setInt(1, userID);
+					stmt.execute();
 				}
-
-				
-				stmt.execute();
 			}
 		}
 		

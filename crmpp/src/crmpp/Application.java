@@ -25,8 +25,8 @@ public class Application {
 	}
 	
 	public static void main(String[] args) throws SQLException {
-		
 		Application app = new Application();
+
 		ReadCSV_GUI gui = new ReadCSV_GUI("CSV Reader", app);
 		gui.start();
 	}

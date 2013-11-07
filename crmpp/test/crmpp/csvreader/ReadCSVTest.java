@@ -19,7 +19,7 @@ public class ReadCSVTest {
 	@Test
 	public void readCRMUsersCSVTest() {
 		List<Object[]> readCRMUsersCSV = readCSV.readCRMUsersCSV(new File(".//testfiles//crmusers.csv"));
-
+		
 		assertTrue("There is not 6 elements in the csv!", readCRMUsersCSV.size() == 6);
 		assertTrue("The 1st element is not an Integer", readCRMUsersCSV.get(0)[0] instanceof Integer);
 		assertTrue("The 2nd element is not an String", readCRMUsersCSV.get(0)[1] instanceof String);

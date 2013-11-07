@@ -15,7 +15,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.EmptyBorder;
@@ -32,18 +31,10 @@ public class ReadCSV_GUI extends JFrame{
 	private JLabel interestsLabel;
 	private JLabel availabilitiesLabel;
 	
-	// corporation labels
-	private JLabel corporationsLabel;
-	private JLabel corporationUserConnectionLabel;
-	
 	// user text fields
 	private JTextField usersTextField;
 	private JTextField interestsTextField;
 	private JTextField availabilitiesTextField;
-	
-	// corporation text fields
-	private JTextField corporationsTextField;
-	private JTextField corporationUserConnectionTextField;
 	
 	// user buttons
 	private JButton usersButton;
@@ -51,34 +42,18 @@ public class ReadCSV_GUI extends JFrame{
 	private JButton availabilitiesButton;
 	private JButton okButton;
 	
-	// corporation buttons
-	private JButton corporationsButton;
-	private JButton corporationUserConnectionButton;
-	private JButton corporationOKButton;
-	
 	// user panels and layouts
 	private JPanel groupPanel;
 	private JPanel flowPanel;
 	private GroupLayout groupLayout;
 	private FlowLayout flowLayout;
 	
-	// corporation panels and layouts
-	private JPanel corporationGroupPanel;
-	private JPanel corporationFlowPanel;
-	private GroupLayout corporationGroupLayout;
-	private FlowLayout corporationFlowLayout;
-	
-	private JTabbedPane tabbedPane;
-	
 	public ReadCSV_GUI(String title, Application _app)
 	{
 		super(title);
 		app = _app;
 		
-		// initialize the components
-		tabbedPane = new JTabbedPane();
 		initUserTab();
-		initCorporationTab();
 
 	}
 	
@@ -187,94 +162,6 @@ public class ReadCSV_GUI extends JFrame{
 		});
 	}
 	
-	// Initalizes the corporation-adding tab of the GUI
-	public void initCorporationTab() {
-		corporationsLabel = new JLabel("Corporations CSV:");
-		corporationsLabel.setBorder(new EmptyBorder(0,0,0,10));
-		corporationUserConnectionLabel = new JLabel("Corporation-user CSV:");
-		corporationUserConnectionLabel.setBorder(new EmptyBorder(0,0,0,10));
-		
-		corporationsTextField = new JTextField(50);
-		corporationUserConnectionTextField = new JTextField(50);
-		
-		corporationsButton = new JButton("Browse...");
-		corporationUserConnectionButton = new JButton("Browse...");
-		
-		corporationsButton.addActionListener(new CSVFileBrowser(corporationsTextField));
-		corporationUserConnectionButton.addActionListener(new CSVFileBrowser(corporationUserConnectionTextField));
-		
-		corporationOKButton = new JButton("OK");
-		corporationOKButton.setMargin(new Insets(10, 10, 10, 10));
-		
-		corporationGroupPanel = new JPanel();
-		corporationGroupLayout = new GroupLayout(corporationGroupPanel);
-		corporationGroupPanel.setLayout(corporationGroupLayout);
-		corporationGroupLayout.setAutoCreateContainerGaps(true);
-		
-		corporationFlowPanel = new JPanel();
-		corporationFlowLayout = new FlowLayout(FlowLayout.CENTER);
-		corporationFlowPanel.setLayout(corporationFlowLayout);
-		corporationFlowPanel.add(corporationOKButton);
-		
-		corporationGroupPanel.add(corporationFlowPanel);
-		
-		// configure the layouts
-		GroupLayout.SequentialGroup hGroup = corporationGroupLayout.createSequentialGroup();
-		hGroup.addGroup(corporationGroupLayout.createParallelGroup().
-		            addComponent(corporationsLabel).addComponent(corporationUserConnectionLabel));
-		hGroup.addGroup(corporationGroupLayout.createParallelGroup().
-					addComponent(corporationFlowPanel).addComponent(corporationsTextField).addComponent(corporationUserConnectionTextField));
-		hGroup.addGroup(corporationGroupLayout.createParallelGroup().
-					addComponent(corporationsButton).addComponent(corporationUserConnectionButton));
-	            
-		corporationGroupLayout.setHorizontalGroup(hGroup);
-		
-		GroupLayout.SequentialGroup vGroup = corporationGroupLayout.createSequentialGroup();
-		vGroup.addGroup(corporationGroupLayout.createParallelGroup(Alignment.BASELINE).
-		            addComponent(corporationsLabel).addComponent(corporationsTextField).addComponent(corporationsButton));
-		vGroup.addGroup(corporationGroupLayout.createParallelGroup(Alignment.BASELINE).
-	            addComponent(corporationUserConnectionLabel).addComponent(corporationUserConnectionTextField).addComponent(corporationUserConnectionButton));
-		vGroup.addGroup(corporationGroupLayout.createParallelGroup(Alignment.BASELINE).
-		            addComponent(corporationFlowPanel));
-		
-		corporationGroupLayout.setVerticalGroup(vGroup);
-		
-		// read and process the files when clicking the 'OK' button
-		corporationOKButton.addActionListener (new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-				
-				File corporationsFile = new File(corporationsTextField.getText());
-				
-				// Check if every file is valid
-				if (!corporationsFile.exists())
-				{
-					showFileNotFoundError("\"" + corporationsTextField.getText() + "\"");
-					return;
-				}
-				
-				File corporationUserConnectionFile = new File(corporationUserConnectionTextField.getText());
-				
-				if (!corporationUserConnectionFile.exists())
-				{
-					showFileNotFoundError("\"" + corporationUserConnectionTextField.getText() + "\"");
-					return;
-				}
-				
-				try 
-				{
-					// TODO: call the application's relevant function similiar to the user tab's OK button
-				} 
-				catch (Exception e1) 
-				{
-					e1.printStackTrace();
-				}
-				corporationsTextField.setText("");
-				corporationUserConnectionTextField.setText("");
-			}
-		});
-	}
-	
 	// Displays a popup error message regarding a non-existing file
 	private void showFileNotFoundError(String filepath) {
 		JOptionPane.showMessageDialog(this, "The file at path " + filepath +" does not exist!", "File not found", JOptionPane.ERROR_MESSAGE);
@@ -283,10 +170,7 @@ public class ReadCSV_GUI extends JFrame{
 	// Packs the frame and sets it visible
 	public void start() {
 
-		getContentPane().add(tabbedPane);
-		
-		tabbedPane.add("Users", groupPanel);
-		tabbedPane.add("Corporations", corporationGroupPanel);
+		add(groupPanel);
 		
     	setResizable(false);
     	
