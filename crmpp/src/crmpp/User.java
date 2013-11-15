@@ -22,9 +22,6 @@ public class User {
         this.sport = sport;
     }
 
-    public User() {
-    }
-
     public int getId() {
         return id;
     }
