@@ -1,10 +1,11 @@
 package crmpp.csvreader;
 
-import crmpp.Model;
-import crmpp.User;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import crmpp.Model;
+import crmpp.User;
 
 /**
  *
@@ -43,12 +44,12 @@ public class PersistCSVElements {
             if (!(row[1] instanceof String)) {
                 throw new Exception("Second element must be a String");
             }
-            if (!users.containsKey((Integer) row[0])) {
+            if (!users.containsKey(row[0])) {
                 throw new Exception("The user is not readed yet");
             }
-            User user = users.get((Integer) row[0]);
-            user.setSport((String) row[1]);
-            users.put((Integer) user.getId(), user);
+            User user = users.get(row[0]);
+            user.sport = (String) row[1];
+            users.put(user.id, user);
         }
         return users;
     }
@@ -64,13 +65,13 @@ public class PersistCSVElements {
             if (!(row[2] instanceof String)) {
                 throw new Exception("Third element must be a String");
             }
-            if (!users.containsKey((Integer) row[0])) {
+            if (!users.containsKey(row[0])) {
                 throw new Exception("The user is not readed yet");
             }
-            User user = users.get((Integer) row[0]);
-            user.setEmail((String) row[1]);
-            user.setAddress((String) row[2]);
-            users.put((Integer) user.getId(), user);
+            User user = users.get(row[0]);
+            user.email = (String) row[1];
+            user.address = (String) row[2];
+            users.put(user.id, user);
         }
         return users;
     }
@@ -78,7 +79,7 @@ public class PersistCSVElements {
     public void persistCSVData(List<Object[]> rawusers, List<Object[]> interests, List<Object[]> availabilities, Model model) throws Exception{
         Map<Integer, User> users = persistAdresses(availabilities, persistInterests(interests, persistUsers(rawusers)));
         for (User user : users.values()) {
-            model.insertUser(user.getId(), user.getLastName(), user.getFirstName(), user.getGender(), user.getAge(), user.getEmail(), user.getAddress(), user.getSport());
+            model.insertUser(user.id, user.lastName, user.firstName, user.gender, user.age, user.email, user.address, user.sport);
         }
     }
 }
