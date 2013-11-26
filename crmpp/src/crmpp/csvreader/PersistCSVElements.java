@@ -10,10 +10,7 @@ import crmpp.csvreader.entities.Availability;
 import crmpp.csvreader.entities.Interest;
 import crmpp.csvreader.entities.User;
 
-/**
- *
- * @author Devids
- */
+
 public class PersistCSVElements {
 
     protected Map<Integer, UserDatas> persistUsers(List<User> objects) throws Exception {
