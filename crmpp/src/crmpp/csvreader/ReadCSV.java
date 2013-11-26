@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import crmpp.csvreader.entities.Availability;
 import crmpp.csvreader.entities.Interest;
 import crmpp.csvreader.entities.User;
 
@@ -106,13 +107,13 @@ public class ReadCSV {
 	 * Returns the contents of the CSV file. Converts the datas to the expected type.
 	 * 
 	 * @param 
-	 * @return The return list contains an Object array: [0] - id, [1] - email, [2] - address
+	 * @return
 	 */
-	public List<Object[]> readCRMAvailabilitiesCSV(File csvFile) {
+	public List<Availability> readCRMAvailabilitiesCSV(File csvFile) {
 		BufferedReader br = null;
 		String line = "";
 		
-		List<Object[]> availabilities = new ArrayList<Object[]>();
+		List<Availability> availabilities = new ArrayList<Availability>();
 
 		try {
 
@@ -122,11 +123,11 @@ public class ReadCSV {
 				// use comma as separator
 				String[] unparsedAvailabilities = line.split(cvsSplitBy);
 				
-				Object[] availability = new Object[]{
+				Availability availability = new Availability(
 						Integer.valueOf(unparsedAvailabilities[0].replace("\"", "").trim()),
 						unparsedAvailabilities[1].replace("\"", "").trim(),
 						unparsedAvailabilities[2].replace("\"", "").trim()
-						};
+						);
 				availabilities.add(availability);
 			}
 
