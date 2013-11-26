@@ -1,9 +1,9 @@
 package crmpp.csvreader.entities;
 
 public class Availability {
-	Integer id;
-	String email;
-	String address;
+	public Integer id;
+	public String email;
+	public String address;
 
 	public Availability() {
 	}

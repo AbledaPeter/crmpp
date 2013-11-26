@@ -1,8 +1,8 @@
 package crmpp.csvreader.entities;
 
 public class Interest {
-	Integer id;
-	String favouriteStport;
+	public Integer id;
+	public String favouriteStport;
 
 	public Interest() {
 	}

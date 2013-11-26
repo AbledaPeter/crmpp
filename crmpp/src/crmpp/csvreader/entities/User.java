@@ -1,11 +1,11 @@
 package crmpp.csvreader.entities;
 
 public class User {
-	Integer id;
-	String firstName;
-	String lastName;
-	String gender;
-	Integer age;
+	public Integer id;
+	public String firstName;
+	public String lastName;
+	public String gender;
+	public Integer age;
 	
 	public User() {
 	}
