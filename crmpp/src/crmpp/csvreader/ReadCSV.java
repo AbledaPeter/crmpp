@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import crmpp.csvreader.entities.User;
+
 public class ReadCSV {
 	
 	private static final String cvsSplitBy = ",";
@@ -15,13 +17,13 @@ public class ReadCSV {
 	/**
 	 * Returns the contents of the CSV file. Converts the datas to the expected type.
 	 * @param 
-	 * @returnThe return list contains an Object array: [0] - id, [1] - firstName [2] - lastName, [3] - gender, [4] - age
+	 * @return
 	 */
-	public List<Object[]> readCRMUsersCSV(File csvFile) {
+	public List<User> readCRMUsersCSV(File csvFile) {
 		BufferedReader br = null;
 		String line = "";
 		
-		List<Object[]> users = new ArrayList<Object[]>();
+		List<User> users = new ArrayList<User>();
 
 		try {
 
@@ -31,13 +33,13 @@ public class ReadCSV {
 				// use comma as separator
 				String[] unparsedUser = line.split(cvsSplitBy);
 				
-				Object[] user = new Object[]{
+				User user = new User(
 						Integer.valueOf(unparsedUser[0].replace("\"", "").trim()),
-						unparsedUser[1].replace("\"", "").trim(),
-						unparsedUser[2].replace("\"", "").trim(),
-						unparsedUser[3].replace("\"", "").trim(),
-						Integer.valueOf(unparsedUser[4].replace("\"", "").trim())
-						};
+						unparsedUser[1].replace("\"", "").trim(), 
+						unparsedUser[2].replace("\"", "").trim(), 
+						unparsedUser[3].replace("\"", "").trim(), 
+						Integer.valueOf(unparsedUser[4].replace("\"", "").trim()));
+
 				users.add(user);
 			}
 
