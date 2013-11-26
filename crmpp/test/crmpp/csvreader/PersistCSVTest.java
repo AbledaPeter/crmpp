@@ -10,6 +10,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import crmpp.Model;
+import crmpp.csvreader.entities.Availability;
+import crmpp.csvreader.entities.Interest;
+import crmpp.csvreader.entities.User;
 
 public class PersistCSVTest {
 	PersistCSVElements persistCSV;
@@ -29,29 +32,29 @@ public class PersistCSVTest {
 
 	@Test
 	public void persistCSVDataTest() throws Exception {
-		List<Object[]> users = new ArrayList<Object[]>();
-		Object[] user = new Object[]{
+		List<User> users = new ArrayList<User>();
+		User user = new User(
 				1,
 				"Elek",
 				"Test",
 				"M",
 				66
-				};
+				);
 		users.add(user);
 		
-		List<Object[]> interests = new ArrayList<Object[]>();
-		Object[] interest = new Object[]{
+		List<Interest> interests = new ArrayList<Interest>();
+		Interest interest = new Interest(
 				1,
-				"Football",
-				};
+				"Football"
+				);
 		interests.add(interest);
 		
-		List<Object[]> availabilities = new ArrayList<Object[]>();
-		Object[] availability = new Object[]{
+		List<Availability> availabilities = new ArrayList<Availability>();
+		Availability availability = new Availability(
 				1,
 				"elekvagyok@valami.hu",
 				"ittlakok"
-				};
+				);
 		availabilities.add(availability);
 		
 		persistCSV.persistCSVData(users, interests, availabilities, model);
