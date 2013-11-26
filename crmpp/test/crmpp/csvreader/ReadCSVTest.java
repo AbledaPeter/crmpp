@@ -8,6 +8,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import crmpp.csvreader.entities.Interests;
 import crmpp.csvreader.entities.User;
 
 public class ReadCSVTest {
@@ -27,11 +28,9 @@ public class ReadCSVTest {
 	
 	@Test
 	public void readCRMInterestsCSVTest() {
-		List<Object[]> readCRMInterestsCSV = readCSV.readCRMInterestsCSV(new File(".//testfiles//crminterests.csv"));
+		List<Interests> readCRMInterestsCSV = readCSV.readCRMInterestsCSV(new File(".//testfiles//crminterests.csv"));
 
 		assertTrue("There is not 6 elements in the csv!", readCRMInterestsCSV.size() == 6);
-		assertTrue("The 1st element is not an Integer", readCRMInterestsCSV.get(0)[0] instanceof Integer);
-		assertTrue("The 2nd element is not an String", readCRMInterestsCSV.get(0)[1] instanceof String);
 	}
 	
 	@Test

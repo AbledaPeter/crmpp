@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import crmpp.csvreader.entities.Interests;
 import crmpp.csvreader.entities.User;
 
 public class ReadCSV {
@@ -63,13 +64,13 @@ public class ReadCSV {
 	 * Returns the contents of the CSV file. Converts the datas to the expected type.
 	 * 
 	 * @param 
-	 * @return The return list contains an Object array: [0] - id, [1] - favouriteSport
+	 * @return
 	 */
-	public List<Object[]> readCRMInterestsCSV(File csvFile) {
+	public List<Interests> readCRMInterestsCSV(File csvFile) {
 		BufferedReader br = null;
 		String line = "";
 		
-		List<Object[]> interests = new ArrayList<Object[]>();
+		List<Interests> interests = new ArrayList<Interests>();
 
 		try {
 
@@ -79,10 +80,9 @@ public class ReadCSV {
 				// use comma as separator
 				String[] unparsedInterest = line.split(cvsSplitBy);
 				
-				Object[] interest = new Object[]{
+				Interests interest = new Interests(
 						Integer.valueOf(unparsedInterest[0].replace("\"", "").trim()),
-						unparsedInterest[1].replace("\"", "").trim()
-						};
+						unparsedInterest[1].replace("\"", "").trim());
 				interests.add(interest);
 			}
 
