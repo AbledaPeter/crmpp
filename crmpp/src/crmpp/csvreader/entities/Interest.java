@@ -1,13 +1,13 @@
 package crmpp.csvreader.entities;
 
-public class Interests {
+public class Interest {
 	Integer id;
 	String favouriteStport;
 
-	public Interests() {
+	public Interest() {
 	}
 
-	public Interests(Integer id, String favouriteStport) {
+	public Interest(Integer id, String favouriteStport) {
 		super();
 		this.id = id;
 		this.favouriteStport = favouriteStport;

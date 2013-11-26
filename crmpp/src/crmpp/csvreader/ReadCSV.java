@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import crmpp.csvreader.entities.Interests;
+import crmpp.csvreader.entities.Interest;
 import crmpp.csvreader.entities.User;
 
 public class ReadCSV {
@@ -66,11 +66,11 @@ public class ReadCSV {
 	 * @param 
 	 * @return
 	 */
-	public List<Interests> readCRMInterestsCSV(File csvFile) {
+	public List<Interest> readCRMInterestsCSV(File csvFile) {
 		BufferedReader br = null;
 		String line = "";
 		
-		List<Interests> interests = new ArrayList<Interests>();
+		List<Interest> interests = new ArrayList<Interest>();
 
 		try {
 
@@ -80,7 +80,7 @@ public class ReadCSV {
 				// use comma as separator
 				String[] unparsedInterest = line.split(cvsSplitBy);
 				
-				Interests interest = new Interests(
+				Interest interest = new Interest(
 						Integer.valueOf(unparsedInterest[0].replace("\"", "").trim()),
 						unparsedInterest[1].replace("\"", "").trim());
 				interests.add(interest);
