@@ -22,12 +22,6 @@ public class PersistCSVTest {
 	public void init(){
 		persistCSV = new PersistCSVElements();
 		model = new Model();
-		
-		try {
-			model.createTables();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Test
@@ -59,7 +53,7 @@ public class PersistCSVTest {
 		
 		persistCSV.persistCSVData(users, interests, availabilities, model);
 		
-		assertTrue("There are no users inserted into the database!", model.getUserCount() > 0);
+		assertTrue("There are no users inserted into the database!", model.countRows("crmusers") > 0);
 	}
 
 }

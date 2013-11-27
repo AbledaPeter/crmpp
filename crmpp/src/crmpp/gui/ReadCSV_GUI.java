@@ -24,25 +24,21 @@ import crmpp.Application;
 
 @SuppressWarnings("serial")
 public class ReadCSV_GUI extends JFrame{
-	private Application app;			// the application logic
+	private Application app;
 	
-	// user labels
 	private JLabel usersLabel;
 	private JLabel interestsLabel;
 	private JLabel availabilitiesLabel;
 	
-	// user text fields
 	private JTextField usersTextField;
 	private JTextField interestsTextField;
 	private JTextField availabilitiesTextField;
 	
-	// user buttons
 	private JButton usersButton;
 	private JButton interestsButton;
 	private JButton availabilitiesButton;
 	private JButton okButton;
 	
-	// user panels and layouts
 	private JPanel groupPanel;
 	private JPanel flowPanel;
 	private GroupLayout groupLayout;
@@ -52,13 +48,10 @@ public class ReadCSV_GUI extends JFrame{
 	{
 		super(title);
 		app = _app;
-		
-		initUserTab();
-
+		initialize();
 	}
 	
-	// Initalizes the user-adding tab of the GUI
-	public void initUserTab() {
+	public void initialize() {
 
 		usersLabel = new JLabel("Users CSV:");
 		usersLabel.setBorder(new EmptyBorder(0,0,0,10));
@@ -81,6 +74,7 @@ public class ReadCSV_GUI extends JFrame{
 		
 		okButton = new JButton("OK");
 		okButton.setMargin(new Insets(10, 10, 10, 10));
+		addOkButtonEventHandler();
 		
 		groupPanel = new JPanel();
 		groupLayout = new GroupLayout(groupPanel);
@@ -94,7 +88,6 @@ public class ReadCSV_GUI extends JFrame{
 		
 		groupPanel.add(flowPanel);
 		
-		// configure the layouts
 		GroupLayout.SequentialGroup hGroup = groupLayout.createSequentialGroup();
 		hGroup.addGroup(groupLayout.createParallelGroup().
 		            addComponent(usersLabel).addComponent(interestsLabel).addComponent(availabilitiesLabel));
@@ -116,34 +109,29 @@ public class ReadCSV_GUI extends JFrame{
 		            addComponent(flowPanel));
 		
 		groupLayout.setVerticalGroup(vGroup);
-		
-		// read and process the files when clicking the 'OK' button
+	}
+	
+	private void addOkButtonEventHandler() {
 		okButton.addActionListener (new ActionListener() {
-
 			public void actionPerformed(ActionEvent e) {
-				
 				File usersFile = new File(usersTextField.getText());
-				
-				// Check if every file is valid
 				if (!usersFile.exists())
 				{
-					showFileNotFoundError("\"" + usersTextField.getText() + "\"");
+					showFileNotFoundError(usersTextField.getText());
 					return;
 				}
 				
 				File interestsFile = new File(interestsTextField.getText());
-				
 				if (!interestsFile.exists())
 				{
-					showFileNotFoundError("\"" + interestsTextField.getText() + "\"");
+					showFileNotFoundError(interestsTextField.getText());
 					return;
 				}
 				
 				File availabilitiesFile = new File(availabilitiesTextField.getText());
-				
 				if (!availabilitiesFile.exists())
 				{
-					showFileNotFoundError("\"" + availabilitiesTextField.getText() + "\"");
+					showFileNotFoundError(availabilitiesTextField.getText());
 					return;
 				}
 				
@@ -155,34 +143,29 @@ public class ReadCSV_GUI extends JFrame{
 				{
 					e1.printStackTrace();
 				}
+				
 				usersTextField.setText("");
 				interestsTextField.setText("");
 				availabilitiesTextField.setText("");
 			}
 		});
 	}
-	
-	// Displays a popup error message regarding a non-existing file
+
 	private void showFileNotFoundError(String filepath) {
-		JOptionPane.showMessageDialog(this, "The file at path " + filepath +" does not exist!", "File not found", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(this, "The file at path " + "\"" + filepath + "\"" +
+												" does not exist!", "File not found", JOptionPane.ERROR_MESSAGE);
 	}
 	
-	// Packs the frame and sets it visible
 	public void start() {
-
 		add(groupPanel);
-		
     	setResizable(false);
-    	
     	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation(dim.width/2-250, dim.height/2-100);
-		
     	pack();
     	setVisible(true);
 	}
 
-	// File browser that can see only CSV files and has the default directory "testfiles"
     private class CSVFileBrowser implements ActionListener {
     	
     	// the text field to save the browsed file path to
