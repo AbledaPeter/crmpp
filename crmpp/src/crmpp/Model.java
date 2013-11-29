@@ -60,30 +60,31 @@ public class Model {
 		}
 	}
 	
-	public void insertUser(int userID, String firstName, String lastName, String gender, int age, String email, String address, String sport)
+	public void insertUser(UserData userData)
 			throws SQLException {
 		if (conn != null) {
-			if (checkUser(firstName, lastName, gender, email, sport)) {
+			if (checkUser(userData.firstName, userData.lastName, userData.gender, userData.email, userData.sport)) {
 
 				PreparedStatement stmt;
 
 				stmt = conn.prepareStatement("INSERT INTO crmusers VALUES (?, ?, ?, ?, ?)");
-				stmt.setInt(1, userID);
-				stmt.setString(2, firstName);
-				stmt.setString(3, lastName);
-				stmt.setString(4, gender);
-				stmt.setInt(5, age);
+				stmt.setInt(1, userData.id);
+				stmt.setString(2, userData.firstName);
+				stmt.setString(3, userData.lastName);
+				stmt.setString(4, userData.gender);
+				stmt.setInt(5, userData.age);
 				stmt.execute();
 
 				stmt = conn.prepareStatement("INSERT INTO crmavailabilities VALUES (?, ?, ?)");
-				stmt.setInt(1, userID);
-				stmt.setString(2, email);
-				stmt.setString(3, address);
+				stmt.setInt(1, userData.id);
+				stmt.setString(2, userData.email);
+				stmt.setString(3, userData.address);
 				stmt.execute();
 
 				stmt = conn.prepareStatement("INSERT INTO crminterests VALUES (?, ?)");
-				stmt.setInt(1, userID);
-				stmt.setString(2, sport);
+				stmt.setInt(1, userData.id);
+				stmt.setString(2, userData.sport);
+
 				stmt.execute();
 			}
 		}
@@ -100,22 +101,27 @@ public class Model {
 	}
 	
 	public void insertCorporation(int ID, String name, String address, String email) throws SQLException {
-		if (conn != null)
-		{
-			if (name.length() > 50 || address.length() > 75 || email.length() > 50)
-			{
-				System.out.println("Invalid argument(s) when inserting a corporation!");
-				return;
+		if (conn != null) {
+			if (checkCorporation(name, address, email)) {
+
+				PreparedStatement stmt = conn.prepareStatement("INSERT INTO crmcorporations VALUES (?, ?, ?, ?)");
+				stmt.setInt(1, ID);
+				stmt.setString(2, name);
+				stmt.setString(3, address);
+				stmt.setString(4, email);
+
+				stmt.execute();
 			}
-			
-			PreparedStatement stmt = conn.prepareStatement("INSERT INTO crmcorporations VALUES (?, ?, ?, ?)");
-			stmt.setInt(1, ID);
-			stmt.setString(2, name);
-			stmt.setString(3, address);
-			stmt.setString(4, email);
-			
-			stmt.execute();
 		}
+	}
+
+	private boolean checkCorporation(String name, String address, String email) {
+		if (name.length() > 50 || address.length() > 75 || email.length() > 50)
+		{
+			System.err.println("Invalid argument(s) when inserting a corporation!");
+			return false;
+		}
+		return true;
 	}
 	
 	public void addCorporationContacts(int corporationID, ArrayList<Integer> users) throws SQLException {

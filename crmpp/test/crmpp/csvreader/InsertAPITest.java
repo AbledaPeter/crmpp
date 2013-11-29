@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import crmpp.Model;
+import crmpp.UserData;
 
 public class InsertAPITest {
 	Model model;
@@ -20,7 +21,7 @@ public class InsertAPITest {
 
 	@Test
 	public void insertUserTest() throws SQLException {
-		model.insertUser(1, "Teszt", "Elek", "M", 66, "tesztelek@ittvagyok.hu", "ittlakok", "sakk");
+		model.insertUser(new UserData(1, "Teszt", "Elek", "M", 66, "tesztelek@ittvagyok.hu", "ittlakok", "sakk"));
 		
 		assertTrue("There are no users inserted into the database!", DatabaseTestHelper.getInstance().countRows("crmusers") > 0);
 	}
@@ -39,9 +40,9 @@ public class InsertAPITest {
 		users.add(2);
 		users.add(3);
 		
-		model.insertUser(1, "Teszt", "Elek", "M", 66, "tesztelek@ittvagyok.hu", "ittlakok", "sakk");
-		model.insertUser(2, "Teszt", "Elek2", "M", 66, "tesztelek@ittvagyok.hu", "ittlakok", "sakk");
-		model.insertUser(3, "Teszt", "Elek3", "M", 66, "tesztelek@ittvagyok.hu", "ittlakok", "sakk");
+		model.insertUser(new UserData(1, "Teszt", "Elek", "M", 66, "tesztelek@ittvagyok.hu", "ittlakok", "sakk"));
+		model.insertUser(new UserData(2, "Teszt", "Elek2", "M", 66, "tesztelek@ittvagyok.hu", "ittlakok", "sakk"));
+		model.insertUser(new UserData(3, "Teszt", "Elek3", "M", 66, "tesztelek@ittvagyok.hu", "ittlakok", "sakk"));
 		
 		model.insertCorporation(1, "TesztCeg", "tesztceg@cegvagyok.hu", "ittvanaceg");
 		
