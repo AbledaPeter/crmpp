@@ -60,38 +60,43 @@ public class Model {
 		}
 	}
 	
-	public void insertUser(int userID, String firstName, String lastName, String gender, int age,
-					String email, String address, String sport) throws SQLException {
-		if (conn != null)
-		{
-			if (firstName.length() > 50 || lastName.length() > 75 || (!gender.equals("M") && !gender.equals("F"))
-					|| email.length() > 50 || sport.length() > 50)
-			{
-				System.out.println("Invalid argument(s) when inserting a user!");
-				return;
+	public void insertUser(int userID, String firstName, String lastName, String gender, int age, String email, String address, String sport)
+			throws SQLException {
+		if (conn != null) {
+			if (checkUser(firstName, lastName, gender, email, sport)) {
+
+				PreparedStatement stmt;
+
+				stmt = conn.prepareStatement("INSERT INTO crmusers VALUES (?, ?, ?, ?, ?)");
+				stmt.setInt(1, userID);
+				stmt.setString(2, firstName);
+				stmt.setString(3, lastName);
+				stmt.setString(4, gender);
+				stmt.setInt(5, age);
+				stmt.execute();
+
+				stmt = conn.prepareStatement("INSERT INTO crmavailabilities VALUES (?, ?, ?)");
+				stmt.setInt(1, userID);
+				stmt.setString(2, email);
+				stmt.setString(3, address);
+				stmt.execute();
+
+				stmt = conn.prepareStatement("INSERT INTO crminterests VALUES (?, ?)");
+				stmt.setInt(1, userID);
+				stmt.setString(2, sport);
+				stmt.execute();
 			}
-			
-			PreparedStatement stmt;
-			
-			stmt = conn.prepareStatement("INSERT INTO crmusers VALUES (?, ?, ?, ?, ?)");
-			stmt.setInt(1, userID);
-			stmt.setString(2, firstName);
-			stmt.setString(3, lastName);
-			stmt.setString(4, gender);
-			stmt.setInt(5, age);
-			stmt.execute();
-			
-			stmt = conn.prepareStatement("INSERT INTO crmavailabilities VALUES (?, ?, ?)");
-			stmt.setInt(1, userID);
-			stmt.setString(2, email);
-			stmt.setString(3, address);
-			stmt.execute();
-			
-			stmt = conn.prepareStatement("INSERT INTO crminterests VALUES (?, ?)");
-			stmt.setInt(1, userID);
-			stmt.setString(2, sport);
-			stmt.execute();
 		}
+	}
+
+	private boolean checkUser(String firstName, String lastName, String gender, String email, String sport) {
+		if (firstName.length() > 50 || lastName.length() > 75 || (!gender.equals("M") && !gender.equals("F"))
+				|| email.length() > 50 || sport.length() > 50)
+		{
+			System.err.println("Invalid argument(s) when inserting a user!");
+			return false;
+		}
+		return true;
 	}
 	
 	public void insertCorporation(int ID, String name, String address, String email) throws SQLException {
