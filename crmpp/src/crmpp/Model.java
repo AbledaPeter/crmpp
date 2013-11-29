@@ -126,19 +126,6 @@ public class Model {
 		}
 	}
 	
-	public int countRows(String tableName) throws SQLException {
-		if (conn != null)
-		{
-			PreparedStatement stmt = conn.prepareStatement(String.format("SELECT COUNT(*) AS rowcount FROM %s", tableName));
-			
-			ResultSet rs = stmt.executeQuery();
-			rs.next();
-			
-			return rs.getInt("rowcount");
-		}
-		return 0;
-	}
-	
 	private void queryTable(String tableName) throws SQLException {
 		if (conn != null)
 		{

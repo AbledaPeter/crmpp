@@ -2,7 +2,6 @@ package crmpp.csvreader;
 
 import static org.junit.Assert.assertTrue;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +52,7 @@ public class PersistCSVTest {
 		
 		persistCSV.persistCSVData(users, interests, availabilities, model);
 		
-		assertTrue("There are no users inserted into the database!", model.countRows("crmusers") > 0);
+		assertTrue("There are no users inserted into the database!", DatabaseTestHelper.getInstance().countRows("crmusers") > 0);
 	}
 
 }

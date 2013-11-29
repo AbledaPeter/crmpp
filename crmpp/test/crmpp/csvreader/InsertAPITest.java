@@ -22,14 +22,14 @@ public class InsertAPITest {
 	public void insertUserTest() throws SQLException {
 		model.insertUser(1, "Teszt", "Elek", "M", 66, "tesztelek@ittvagyok.hu", "ittlakok", "sakk");
 		
-		assertTrue("There are no users inserted into the database!", model.countRows("crmusers") > 0);
+		assertTrue("There are no users inserted into the database!", DatabaseTestHelper.getInstance().countRows("crmusers") > 0);
 	}
 	
 	@Test
 	public void insertCorporationTest() throws SQLException {
 		model.insertCorporation(1, "TesztCeg", "tesztceg@cegvagyok.hu", "ittvanaceg");
 		
-		assertTrue("There are no corporations inserted into the database!", model.countRows("crmcorporations") > 0);
+		assertTrue("There are no corporations inserted into the database!", DatabaseTestHelper.getInstance().countRows("crmcorporations") > 0);
 	}
 	
 	@Test
@@ -47,6 +47,6 @@ public class InsertAPITest {
 		
 		model.addCorporationContacts(1, users);
 		
-		assertTrue("There are no corporation contacts inserted into the database!", model.countRows("crmcorporationuserconnection") > 0);
+		assertTrue("There are no corporation contacts inserted into the database!", DatabaseTestHelper.getInstance().countRows("crmcorporationuserconnection") > 0);
 	}
 }
