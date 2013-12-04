@@ -27,7 +27,7 @@ public class PersistCSVElements {
                 throw new Exception("The user is not readed yet");
             }
             UserData user = users.get(row.id);
-            user.sport = row.favouriteStport;
+            user.sport = row.favouriteSport;
             users.put(user.id, user);
         }
         return users;
@@ -49,7 +49,7 @@ public class PersistCSVElements {
     public void persistCSVData(List<User> rawusers, List<Interest> interests, List<Availability> availabilities, Model model) throws Exception{
         Map<Integer, UserData> users = persistAdresses(availabilities, persistInterests(interests, persistUsers(rawusers)));
         for (UserData user : users.values()) {
-            model.insertUser(user.id, user.lastName, user.firstName, user.gender, user.age, user.email, user.address, user.sport);
+            model.insertUser(new UserData(user.id, user.lastName, user.firstName, user.gender, user.age, user.email, user.address, user.sport));
         }
     }
 }
